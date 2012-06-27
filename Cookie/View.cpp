@@ -16,3 +16,13 @@ Controller* View::getController () const
 {
 	return controller_;
 }
+
+int View::getWidth () const
+{
+	return width_;
+}
+
+int View::getHeight () const
+{
+	return height_;
+}

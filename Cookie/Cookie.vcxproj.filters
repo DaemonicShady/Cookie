@@ -33,6 +33,12 @@
     <ClCompile Include="OpenGlView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="base\Fraps.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="base\Timer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -48,6 +54,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="OpenGlView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="base\Fraps.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="base\Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

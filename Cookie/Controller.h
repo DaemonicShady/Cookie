@@ -6,6 +6,8 @@
 
 class View;
 class Model;
+class Fraps;
+class Font;
 
 class Controller
 {
@@ -24,6 +26,9 @@ private:
 	bool   keys [256];
 	Model* model_;
 	View*  view_;
+
+	Fraps* fraps_;
+	Font*  font_;
 };
 
 #endif

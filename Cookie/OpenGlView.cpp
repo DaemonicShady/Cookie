@@ -304,4 +304,9 @@ HWND OpenGlView::getHWnd ()
 	return hWnd_;
 }
 
+HDC OpenGlView::getHDc ()
+{
+	return hDC_;
+}
+
 /****************HELPERS***********************/

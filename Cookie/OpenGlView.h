@@ -22,6 +22,8 @@ public:
 
 	HWND      getHWnd ();
 	HINSTANCE getHInstance ();
+	HDC       getHDc  ();
+
 protected:
 	bool changeResolution ( int width, int height, int bpp );
 	void reshape          ( int width, int height );

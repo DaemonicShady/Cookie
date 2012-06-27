@@ -10,7 +10,7 @@ Application::Application ( string appName, HINSTANCE hInstance )
 	appName_    = appName;
 	hInstance_  = hInstance;
 	view_       = new OpenGlView ( appName, hInstance, 800, 600, 32 );
-	model_      = new Model ();
+	model_      = new Model ( view_ );
 	controller_ = new Controller ( model_, view_ );
 }
 

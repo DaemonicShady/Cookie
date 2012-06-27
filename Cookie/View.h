@@ -1,6 +1,7 @@
 #ifndef __VIEW__
 #define __VIEW__
 
+#include <Windows.h>
 #include <string>
 
 class Controller;
@@ -21,7 +22,11 @@ public:
 	
 	virtual void resize        ( int width, int height ) = 0; //!< Destroys and creates a new window with requested size.
 
-	//virtual HWND getHWnd () = 0;
+	virtual HWND getHWnd () = 0;
+	virtual HDC  getHDc  () = 0;
+
+	int     getWidth  () const;
+	int     getHeight () const;
 
 	~View () {} 
 protected:
