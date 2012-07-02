@@ -5,12 +5,18 @@
 #include "OpenGlView.h"
 #include "Controller.h"
 
+#include "base\Keyboard.h"
+#include "base\Mouse.h"
+
 static const char* className = "OpenGlViewClass";
 
 OpenGlView::OpenGlView ( string name, HINSTANCE hInstance,
 						 int width, int height,
 						 int bpp, bool fullscreen ) : View ( name )
 {
+	mouse_    = new Mouse ( width >> 1, height >> 1 );
+	keyboard_ = new Keyboard;
+
 	hInstance_ = hInstance;
 	hWnd_      = 0;
 	hDC_       = 0;
@@ -235,7 +241,7 @@ void OpenGlView::reshape ( int width, int height )
 
 	glMatrixMode	( GL_PROJECTION );
 	glLoadIdentity	();
-	gluPerspective	( 45.0, (GLdouble)width/height, 2.0, 100.0 );
+	gluPerspective	( 45.0, (GLdouble)width/height, 0.1, 100.0 );
 }
 
 /****************** Window functions **********************/
@@ -272,21 +278,32 @@ static LRESULT CALLBACK wndProc ( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 			return 0;
 
 		case WM_KEYDOWN :
-			view -> getController () -> keyboard ( wParam, true );
+			view -> keyboard_ -> setKey ( wParam, true );
+			view -> getController () -> handleKeyboard ( * view -> keyboard_ );
 			return 0;
 
 		case WM_KEYUP :
-			view -> getController () -> keyboard ( wParam, false );
+			view -> keyboard_ -> setKey ( wParam, false );
+			view -> getController () -> handleKeyboard ( * view -> keyboard_ );
 			return 0;
 
 		case WM_LBUTTONDOWN :
-			view -> getController () -> mouseClick ( lParam, true );
+			return 0;
+
+		case WM_MOUSEMOVE :
+			view -> getController () -> handleMouse ( * view -> mouse_ );
 			return 0;
 
 		case WM_SIZE :
+		{
 			view -> reshape ( LOWORD(lParam), HIWORD(lParam) );
-			view -> getController () -> draw ();
+
+			Controller* controller = view -> getController ();
+
+			if ( controller != 0 )
+				controller -> update ();
 			return 0;
+		}
 
 		case WM_ACTIVATE :
 			return 0;

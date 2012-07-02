@@ -22,6 +22,9 @@ public:
 	
 	virtual void resize        ( int width, int height ) = 0; //!< Destroys and creates a new window with requested size.
 
+	virtual void startOrtho () {};
+	virtual void endOrtho   () {};
+
 	virtual HWND getHWnd () = 0;
 	virtual HDC  getHDc  () = 0;
 

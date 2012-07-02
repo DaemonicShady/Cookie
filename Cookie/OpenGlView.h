@@ -5,6 +5,9 @@
 
 #include "View.h"
 
+class Mouse;
+class Keyboard;
+
 class OpenGlView : public View
 {
 public:
@@ -35,6 +38,9 @@ private:
 	HWND      hWnd_;
 	HDC       hDC_;
 	HGLRC     hRC_;
+
+	Mouse*    mouse_;
+	Keyboard* keyboard_;
 
 	friend static LRESULT CALLBACK wndProc ( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam );
 };

@@ -3,7 +3,7 @@
 
 class View;
 class Controller;
-class Font;
+class Camera;
 
 class Model
 {
@@ -11,13 +11,11 @@ public:
 	Model  ( View* view_ );
 	~Model ();
 
-	void render ();
+	void    render ( Camera* );
 
 private:
 	View*       view_;
 	Controller* controller_;
-
-	Font* font_;
 };
 
 #endif
