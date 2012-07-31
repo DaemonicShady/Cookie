@@ -241,7 +241,7 @@ void OpenGlView::reshape ( int width, int height )
 
 	glMatrixMode	( GL_PROJECTION );
 	glLoadIdentity	();
-	gluPerspective	( 45.0, (GLdouble)width/height, 0.1, 100.0 );
+	gluPerspective	( 45.0, (GLdouble)width/height, 0.1, 300.0 );
 }
 
 /****************** Window functions **********************/
