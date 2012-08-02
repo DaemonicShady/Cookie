@@ -8,3 +8,9 @@ Build 2.
 
 Build 3.
   + Camera ( modelview ) and simply movement added.
+
+Build 4.
+  + Simple heightmaps. Using simple vertex arrays.
+
+Build 5.
+  + Simple openGL lighting.
