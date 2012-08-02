@@ -52,7 +52,7 @@ Terrain::Terrain ( const char* heightmap, const char* colormap,
 	int height = heightTexture -> getHeight ();
 	nVertices_ = 6 * (width - 1) * (height - 1);
 
-	vertices_ = new Vertex [6 * nVertices_];
+	vertices_ = new Vertex [nVertices_];
 
 	byte* heightData = getGrayscaleData ( heightTexture );
 	byte* colorData  = colorTexture -> getData ();
@@ -72,8 +72,8 @@ Terrain::Terrain ( const char* heightmap, const char* colormap,
 		}
 
 	iVertex = 0;
-	for ( int i = 0; i < width; i++ )
-		for ( int j = 0; j < height; j++ ) {
+	for ( int i = 0; i < width - 1; i++ )
+		for ( int j = 0; j < height - 1; j++ ) {
 			iData = 3 * (j * width + i);
 			*(dword *)vertices_ [iVertex++].color = makeRGBA ( &colorData [iData] );
 			*(dword *)vertices_ [iVertex++].color = makeRGBA ( &colorData [iData + 3] );
@@ -87,6 +87,8 @@ Terrain::Terrain ( const char* heightmap, const char* colormap,
 	delete heightTexture;
 	delete colorTexture;
 	delete realTexture;
+
+	computeNormals ();
 }
 
 Terrain::Terrain ( Texture* heightmap, Texture* colormap, Texture* texture,
@@ -155,11 +157,35 @@ void Terrain::render ()
 	//int vertexOffset = (int)&vertices_ [0].vertex - (int)&vertices_ [0];
 	//glPolygonMode ( GL_FRONT, GL_LINE );
 	glColor3f ( 0.0f, 1.0f, 0.0f );
-	glEnableClientState ( GL_COLOR_ARRAY );
-	glEnableClientState ( GL_VERTEX_ARRAY );
+	glEnableClientState  ( GL_COLOR_ARRAY );
+	glEnableClientState  ( GL_NORMAL_ARRAY );
+	glEnableClientState  ( GL_VERTEX_ARRAY );
 	glColorPointer       ( 4, GL_UNSIGNED_BYTE, sizeof(Vertex), vertices_ [0].color );
+	glNormalPointer      ( GL_FLOAT, sizeof(Vertex), vertices_ [0].normal );
 	glVertexPointer      ( 3, GL_FLOAT, sizeof(Vertex), vertices_ [0].coord );
 	glDrawArrays         ( GL_TRIANGLES, 0, nVertices_ );
 	glDisableClientState ( GL_VERTEX_ARRAY );
+	glDisableClientState ( GL_NORMAL_ARRAY );
 	glDisableClientState ( GL_COLOR_ARRAY );
+}
+
+void Terrain::computeNormals ()
+{
+	vector3D normal;
+
+	for ( int i = 0; i < nVertices_; i += 3 ) {
+		normal = -computeNormal ( vertices_ [i].coord, vertices_ [i + 1].coord,
+			                      vertices_ [i + 2].coord ).normalize ();
+		vertices_ [i    ].normal = normal;
+		vertices_ [i + 1].normal = normal;
+		vertices_ [i + 2].normal = normal;
+	}
+}
+
+vector3D Terrain::computeNormal ( const vector3D& A, const vector3D& B,
+	                              const vector3D& C )
+{
+	return vector3D(A.y * (B.z - C.z) + B.y * (C.z - A.z) + C.y * (A.z - B.z),
+		            A.z * (B.x - C.x) + B.z * (C.x - A.x) + C.z * (A.x - B.x),
+					A.x * (B.y - C.y) + B.x * (C.y - A.y) + C.x * (A.y - B.y));
 }

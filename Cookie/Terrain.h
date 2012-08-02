@@ -26,7 +26,9 @@ private:
 	Vertex* vertices_;
 	int     nVertices_;
 
-//	float*  computeNormals ( float* heightmap = 0 ); // Unused till now.
+	void     computeNormals ();
+	vector3D computeNormal  ( const vector3D& A, const vector3D& B,
+		                      const vector3D& C );
 };
 
 #endif
