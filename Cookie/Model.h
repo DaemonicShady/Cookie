@@ -5,6 +5,7 @@ class View;
 class Controller;
 class Camera;
 class Terrain;
+class Shader;
 
 class Model
 {
@@ -19,6 +20,7 @@ private:
 	Controller* controller_;
 
 	Terrain*    terrain_;
+	Shader*     shader_;
 };
 
 #endif

@@ -136,6 +136,7 @@
     <ClCompile Include="OpenGlView.cpp" />
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="VAO.cpp" />
+    <ClCompile Include="VBO.cpp" />
     <ClCompile Include="View.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -150,6 +151,7 @@
     <ClInclude Include="OpenGlView.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="VAO.h" />
+    <ClInclude Include="VBO.h" />
     <ClInclude Include="View.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

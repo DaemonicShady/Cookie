@@ -3,12 +3,14 @@
 #include <windows.h>
 #include <gl\gl.h>
 
+#include <ExtensionGL.h>
 #include <TextureGL.h>
 #include <Texture.h>
 #include <vector2D.h>
 #include <vector3D.h>
 
 #include "Terrain.h"
+#include "VAO.h"
 
 using std::cerr;
 
@@ -50,6 +52,7 @@ Terrain::Terrain ( const char* heightmap, const char* colormap,
 
 	int width  = heightTexture -> getWidth ();
 	int height = heightTexture -> getHeight ();
+	int nQuads = (width - 1) * (height - 1);
 	nVertices_ = 6 * (width - 1) * (height - 1);
 
 	vertices_ = new Vertex [nVertices_];
@@ -89,6 +92,7 @@ Terrain::Terrain ( const char* heightmap, const char* colormap,
 	delete realTexture;
 
 	computeNormals ();
+	uploadToGpu    ();
 }
 
 Terrain::Terrain ( Texture* heightmap, Texture* colormap, Texture* texture,
@@ -141,14 +145,45 @@ Terrain::Terrain ( Texture* heightmap, Texture* colormap, Texture* texture,
 
 Terrain::~Terrain ()
 {
+	delete [] vertices_;
+
+	removeFromGpu ();
 }
 
 void Terrain::uploadToGpu ()
 {
+	initializeExtensions ();
+	glGenBuffers ( 1, &vertexBufferId_ );
+	glBindBuffer ( GL_ARRAY_BUFFER, vertexBufferId_ );
+	glBufferData ( GL_ARRAY_BUFFER, sizeof(Vertex) * nVertices_,
+		           vertices_, GL_STATIC_DRAW );
+	glBindBuffer ( GL_ARRAY_BUFFER, 0 );
+
+
+	int colorOffs  = (int)&vertices_ [0].color  - (int)&vertices_ [0];
+	int normalOffs = (int)&vertices_ [0].normal - (int)&vertices_ [0];
+	int coordOffs  = (int)&vertices_ [0].coord  - (int)&vertices_ [0];
+
+	vao_ = new VAO ();
+
+	vao_ -> bind ();
+	glPushClientAttrib  ( GL_CLIENT_VERTEX_ARRAY_BIT );
+	glEnableClientState ( GL_COLOR_ARRAY );
+	glEnableClientState ( GL_NORMAL_ARRAY );
+	glEnableClientState ( GL_VERTEX_ARRAY );
+
+	glBindBuffer      ( GL_ARRAY_BUFFER, vertexBufferId_ );
+	glColorPointer    ( 4, GL_UNSIGNED_BYTE, sizeof(Vertex), (void *)colorOffs );
+	glNormalPointer   ( GL_FLOAT, sizeof(Vertex), (void *)normalOffs );
+	glVertexPointer   ( 3, GL_FLOAT, sizeof(Vertex), (void *)coordOffs );
+	vao_ -> unbind ();
 }
 
 void Terrain::removeFromGpu ()
 {
+	glBindBuffer    ( GL_ARRAY_BUFFER, vertexBufferId_ );
+	glBufferData    ( GL_ARRAY_BUFFER, 0, 0, 0 );
+	glDeleteBuffers ( 1, &vertexBufferId_ );
 }
 
 void Terrain::render ()
@@ -156,7 +191,7 @@ void Terrain::render ()
 	//int colorOffset  = (int)&vertices_ [0].color  - (int)&vertices_ [0];
 	//int vertexOffset = (int)&vertices_ [0].vertex - (int)&vertices_ [0];
 	//glPolygonMode ( GL_FRONT, GL_LINE );
-	glColor3f ( 0.0f, 1.0f, 0.0f );
+	/*glColor3f ( 0.0f, 1.0f, 0.0f );
 	glEnableClientState  ( GL_COLOR_ARRAY );
 	glEnableClientState  ( GL_NORMAL_ARRAY );
 	glEnableClientState  ( GL_VERTEX_ARRAY );
@@ -166,7 +201,11 @@ void Terrain::render ()
 	glDrawArrays         ( GL_TRIANGLES, 0, nVertices_ );
 	glDisableClientState ( GL_VERTEX_ARRAY );
 	glDisableClientState ( GL_NORMAL_ARRAY );
-	glDisableClientState ( GL_COLOR_ARRAY );
+	glDisableClientState ( GL_COLOR_ARRAY );*/
+
+	vao_ -> bind ();
+	glDrawArrays ( GL_TRIANGLES, 0, nVertices_ );
+	vao_ -> unbind ();
 }
 
 void Terrain::computeNormals ()

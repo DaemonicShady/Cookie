@@ -2,6 +2,7 @@
 #define __TERRAIN__
 
 class  Texture;
+class  VAO;
 struct Vertex;
 
 class Terrain
@@ -25,6 +26,10 @@ private:
 	float   heightScale_;
 	Vertex* vertices_;
 	int     nVertices_;
+
+	unsigned int vertexBufferId_;
+
+	VAO*    vao_;
 
 	void     computeNormals ();
 	vector3D computeNormal  ( const vector3D& A, const vector3D& B,
