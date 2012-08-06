@@ -9,6 +9,7 @@
 #include "Camera.h"
 
 #include "Terrain.h"
+#include "Grass.h"
 
 using std::cerr;
 
@@ -21,6 +22,9 @@ Model::Model ( View* view )
 	view_    = view;
 	terrain_ = new Terrain ( "textures/heightmap.bmp",
 		                     "textures/colormap.bmp", 0, 5.0f, 1.0f / 16.0f );
+
+	grass_   = new Grass ( terrain_, "textures/grass.bmp",
+		                   "textures/grass_alpha.bmp" );
 
 	shader_  = new Shader ();
 	if ( !shader_ -> isSupported () )
@@ -38,6 +42,7 @@ Model::Model ( View* view )
 Model::~Model ()
 {
 	delete shader_;
+	delete grass_;
 	delete terrain_;
 }
 
@@ -54,7 +59,7 @@ void Model::render ( Camera* camera )
 
 	glMultMatrixf ( m );
 	glTranslatef ( -v.x, -v.y, -v.z );
-	glTranslatef ( 0.0f, -0.5f, 0.0f );
+	glTranslatef ( 0.0f, -4.0f, 0.0f );
 
 	//glLightf ( GL_LIGHT0,
 //	glEnable ( GL_CULL_FACE );
@@ -69,12 +74,14 @@ void Model::render ( Camera* camera )
 //	glLightfv ( GL_LIGHT0, GL_AMBIENT,  ambientLight  );
 
 	glEnable ( GL_DEPTH_TEST );
-//	glEnable ( GL_LIGHTING );
-//	glEnable ( GL_LIGHT0 );
 
 	shader_  -> bind ();
 	terrain_ -> render ();
 	shader_  -> unbind ();
+
+	glDisable ( GL_DEPTH_TEST );
+
+	grass_ -> render ( camera );
 
 /*	glColor3f  ( 1.0f, 0.0f, 0.0f );
 	glNormal3f ( 0.0f, 1.0f, 0.0f );
@@ -85,7 +92,5 @@ void Model::render ( Camera* camera )
 	glVertex3f ( 0.0f, 0.0f, 3.0f );
 	glEnd   ();*/
 
-//	glDisable ( GL_LIGHT0 );
-//	glDisable ( GL_LIGHTING );
-	glDisable ( GL_DEPTH_TEST );
+	
 }

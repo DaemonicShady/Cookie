@@ -131,6 +131,7 @@
     <ClCompile Include="base\Timer.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Controller.cpp" />
+    <ClCompile Include="Grass.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="OpenGlView.cpp" />
@@ -147,6 +148,7 @@
     <ClInclude Include="base\Timer.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Controller.h" />
+    <ClInclude Include="Grass.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="OpenGlView.h" />
     <ClInclude Include="Terrain.h" />

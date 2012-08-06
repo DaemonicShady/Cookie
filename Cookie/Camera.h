@@ -10,7 +10,11 @@ public:
 	Camera ();
 	Camera ( const Camera& );
 
-	const vector3D& getPosition () const;
+	const vector3D& getPosition      () const;
+	const vector3D& getViewDirection () const;
+	const vector3D& getUpDirection   () const;
+	const vector3D& getSideDirection () const;
+
 	void setPosition ( const vector3D& );
 
 	void move ( const vector3D& );

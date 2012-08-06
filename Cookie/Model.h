@@ -6,6 +6,7 @@ class Controller;
 class Camera;
 class Terrain;
 class Shader;
+class Grass;
 
 class Model
 {
@@ -20,6 +21,7 @@ private:
 	Controller* controller_;
 
 	Terrain*    terrain_;
+	Grass*      grass_;
 	Shader*     shader_;
 };
 

@@ -26,6 +26,21 @@ const vector3D& Camera::getPosition () const
 	return position_;
 }
 
+const vector3D& Camera::getViewDirection () const
+{
+	return viewDir_;
+}
+
+const vector3D& Camera::getUpDirection () const
+{
+	return upDir_;
+}
+
+const vector3D& Camera::getSideDirection () const
+{
+	return sideDir_;
+}
+
 void Camera::move ( const vector3D& v )
 {
 	position_ = mapToWorld ( v );

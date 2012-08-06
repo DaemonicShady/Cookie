@@ -2,14 +2,15 @@
 
 #include "Application.h"
 
+#include <iostream>
 #include <fstream>
 
 int APIENTRY WinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 					   LPSTR cmdLine, int cmdShow )
 {
 	std::ofstream fout ( "log.txt" );
-	fout << "Starting program...\n";
-	fout.close();
+	std::cerr.rdbuf ( fout.rdbuf () );
+	std::cerr << "Starting program...\n";
 
 	Application* app = new Application ( "Cookie", hInstance );
 
@@ -17,7 +18,8 @@ int APIENTRY WinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	delete app;
 
-	std::remove ( "log.txt" );
+	fout.close ();
+	//std::remove ( "log.txt" );
 
 	return 0;
 }

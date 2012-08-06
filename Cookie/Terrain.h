@@ -18,6 +18,10 @@ public:
 	void removeFromGpu ();
 	void render ();
 
+	float getHeight ( float x, float z ) const;
+	float getLengthX () const;
+	float getLengthZ () const;
+
 	void setScale ( float scale, float heightScale );
 
 private:
@@ -25,7 +29,10 @@ private:
 	float   scale_;
 	float   heightScale_;
 	Vertex* vertices_;
+	float** heights_;
 	int     nVertices_;
+	int     nX_;
+	int     nZ_;
 
 	unsigned int vertexBufferId_;
 
@@ -33,7 +40,7 @@ private:
 
 	void     computeNormals ();
 	vector3D computeNormal  ( const vector3D& A, const vector3D& B,
-		                      const vector3D& C );
+		                      const vector3D& C ) const;
 };
 
 #endif
