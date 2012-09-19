@@ -23,8 +23,7 @@ Model::Model ( View* view )
 	terrain_ = new Terrain ( "textures/heightmap.bmp",
 		                     "textures/colormap.bmp", 0, 5.0f, 1.0f / 16.0f );
 
-	grass_   = new Grass ( terrain_, "textures/grass.bmp",
-		                   "textures/grass_alpha.bmp" );
+	grass_   = new Grass ( terrain_, "textures/grass_new2.bmp" );
 
 	shader_  = new Shader ();
 	if ( !shader_ -> isSupported () )
@@ -61,18 +60,6 @@ void Model::render ( Camera* camera )
 	glTranslatef ( -v.x, -v.y, -v.z );
 	glTranslatef ( 0.0f, -4.0f, 0.0f );
 
-	//glLightf ( GL_LIGHT0,
-//	glEnable ( GL_CULL_FACE );
-//	glColorMaterial ( GL_FRONT, GL_DIFFUSE );
-//	glColorMaterial ( GL_BACK, GL_DIFFUSE );
-//	glEnable ( GL_COLOR_MATERIAL );
-
-//	glLightModeli ( GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE );
-
-//	glLightfv ( GL_LIGHT0, GL_POSITION, lightPosition );
-//	glLightfv ( GL_LIGHT0, GL_DIFFUSE,  diffuseLight  );
-//	glLightfv ( GL_LIGHT0, GL_AMBIENT,  ambientLight  );
-
 	glEnable ( GL_DEPTH_TEST );
 
 	shader_  -> bind ();
@@ -82,15 +69,4 @@ void Model::render ( Camera* camera )
 	glDisable ( GL_DEPTH_TEST );
 
 	grass_ -> render ( camera );
-
-/*	glColor3f  ( 1.0f, 0.0f, 0.0f );
-	glNormal3f ( 0.0f, 1.0f, 0.0f );
-	glBegin ( GL_QUADS );
-	glVertex3f ( 0.0f, 0.0f, 0.0f );
-	glVertex3f (  1.0f, 0.0f, 0.0f );
-	glVertex3f (  1.0f, 0.0f, 3.0f );
-	glVertex3f ( 0.0f, 0.0f, 3.0f );
-	glEnd   ();*/
-
-	
 }

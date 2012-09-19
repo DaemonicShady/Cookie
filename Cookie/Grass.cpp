@@ -28,17 +28,21 @@ inline float random ( float a, float b )
 	return a + ( b - a ) * random ();
 }
 
-Grass::Grass ( Terrain* terrain, const char* textureFile, const char* alphaFile )
+Grass::Grass ( Terrain* terrain, const char* textureFile )
 {
-	float stride = 2.0f;
+	float stride = 1.0f;
 	float lengthX = 50.0f;//terrain -> getLengthX ();
 	float lengthZ = 50.0f;//terrain -> getLengthZ ();
+	int   line    = 0;
 
-	for ( float x0 = 0.0f; x0 < lengthX; x0 += stride )
-		for ( float z0 = 0.0f; z0 < lengthZ; z0 += stride )
+	for ( float x0 = 1.0f; x0 < lengthX; x0 += stride, line++ )
+		for ( float z0 = 1.0f; z0 < lengthZ; z0 += stride )
 		{
-			float x = x0;
-			float z = z0;
+			float x = x0 + (random () - 0.5f) * stride;
+			float z = z0 + (random () - 0.5f) * stride;
+
+			if ( line & 1 )
+				x += 0.5f * stride;
 
 			vector3D point = vector3D ( x, terrain->getHeight(x, z) + 0.5f, z );
 			GrassObject* object = new GrassObject;
@@ -80,8 +84,8 @@ Grass::~Grass ()
 void Grass::render ( Camera* camera )
 {
 	glEnable    ( GL_TEXTURE_2D );
-	glEnable    ( GL_ALPHA_TEST );
-	glAlphaFunc ( GL_GEQUAL, 0.5 );
+//	glEnable    ( GL_ALPHA_TEST );
+//	glAlphaFunc ( GL_GEQUAL, 0.5 );
 
 	//glBindTexture ( GL_TEXTURE_2D, texture_ );
 
@@ -105,5 +109,5 @@ void Grass::render ( Camera* camera )
 
 	shader_ -> unbind ();
 
-	glDisable ( GL_ALPHA_TEST );
+//	glDisable ( GL_ALPHA_TEST );
 }

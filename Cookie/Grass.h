@@ -13,7 +13,7 @@ using std::list;
 class Grass
 {
 public:
-	Grass  ( Terrain*, const char* textureFile, const char* alphaFile );
+	Grass  ( Terrain*, const char* textureFile );
 	~Grass ();
 
 	void render ( Camera* );
